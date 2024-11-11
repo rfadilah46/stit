@@ -98,6 +98,49 @@ class AuthController extends Controller
         return $this->respondWithToken(auth()->refresh());
     }
 
+    //create_user
+    public function create_user(Request $request)
+    {
+        //validator
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'role' => 'required|string|max:255'
+        ]);
+
+        //password default to 123456
+        $request->merge(['password' => '123456']);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
+        //create user
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        //role
+        $user->role = $request->role;
+        $user->password = bcrypt($request->password);
+        $user->save();
+
+        return response()->json([
+            'message' => 'User created successfully',
+            'user' => $user
+        ], 201);
+    }
+
+    //index_dosen
+    public function index_dosen()
+    {
+        $users = User::where('role', 'Dosen')->get();
+
+        return response()->json([
+            'message' => 'Users retrieved successfully',
+            'data' => $users
+        ], 200);
+    }
+
     /**
      * Get the token array structure.
      *

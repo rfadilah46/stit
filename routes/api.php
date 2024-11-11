@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudyProgramController;
+use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +30,19 @@ Route::prefix('v1')->group(function () {
         Route::post('login', [AuthController::class, 'login']);
         Route::post('logout', [AuthController::class, 'logout']);
         Route::post('me', [AuthController::class, 'me']);
+        //create user
+        Route::post('create_user', [AuthController::class, 'create_user']);
         //register
         Route::post('register', [AuthController::class, 'register']);
+    });
+
+    //prefix user, middleware auth:api
+    Route::prefix('user')->group(function () {
+        Route::get('/dosen', [AuthController::class, 'index_dosen']);
+        Route::get('/{id}', [AuthController::class, 'show_user']);
+        Route::put('/{id}', [AuthController::class, 'update_user']);
+        Route::delete('/{id}', [AuthController::class, 'destroy_user']);
+
     });
 
     //prefix study_program, middleware auth:api
@@ -39,6 +52,24 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [StudyProgramController::class, 'store']);
         Route::put('/{id}', [StudyProgramController::class, 'update']);
         Route::delete('/{id}', [StudyProgramController::class, 'destroy']);
+    });
+
+    //prefix faculty, middleware auth:api
+    Route::prefix('faculty')->group(function () {
+        Route::get('/', [FacultyController::class, 'index']);
+        Route::get('/{id}', [FacultyController::class, 'show']);
+        Route::post('/', [FacultyController::class, 'store']);
+        Route::put('/{id}', [FacultyController::class, 'update']);
+        Route::delete('/{id}', [FacultyController::class, 'destroy']);
+    });
+
+    //prefix course, middleware auth:api
+    Route::prefix('course')->group(function () {
+        Route::get('/', [CourseController::class, 'index']);
+        Route::get('/{id}', [CourseController::class, 'show']);
+        Route::post('/', [CourseController::class, 'store']);
+        Route::put('/{id}', [CourseController::class, 'update']);
+        Route::delete('/{id}', [CourseController::class, 'destroy']);
     });
 
 });
