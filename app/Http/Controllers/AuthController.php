@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+//UserDetail
+use App\Models\UserDetail;
 use Illuminate\Http\Request;
 //validator
 use Illuminate\Support\Facades\Validator;
@@ -123,6 +125,11 @@ class AuthController extends Controller
         $user->role = $request->role;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        //create user detail
+        $user_detail = new UserDetail;
+        $user_detail->user_id = $user->id;
+        $user_detail->save();
 
         return response()->json([
             'message' => 'User created successfully',

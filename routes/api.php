@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,15 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [CourseController::class, 'store']);
         Route::put('/{id}', [CourseController::class, 'update']);
         Route::delete('/{id}', [CourseController::class, 'destroy']);
+    });
+
+    //prefix user, middleware auth:api
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index_all_users']);
+        Route::get('/{id}', [UserController::class, 'show_one_user']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::post('update/{id}', [UserController::class, 'update_user']);
+        Route::delete('/{id}', [UserController::class, 'destroy_user']);
     });
 
 });

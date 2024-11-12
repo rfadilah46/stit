@@ -20,7 +20,6 @@ class CourseController extends Controller
             'professor_id' => 'required',
             'assistant_professor' => 'required',
             'semester' => 'required',
-            'faculty_id' => 'required'
         ]);
 
         //create course
@@ -39,5 +38,19 @@ class CourseController extends Controller
             'message' => 'Course created successfully',
             'data' => $course
         ], 201);
+    }
+
+    //index
+    public function index()
+    {
+        //get all courses, join dengan tabel study_programs.id = courses.study_program_id dan users.id = courses.professor_id
+        $courses = Course::join('study_programs', 'study_programs.id', '=', 'courses.study_program_id')
+            ->join('users', 'users.id', '=', 'courses.professor_id')
+            ->select('courses.*', 'study_programs.name as study_program_name', 'users.name as professor_name')
+            ->get();
+        return response()->json([
+            'message' => 'Success',
+            'data' => $courses
+        ], 200);
     }
 }
