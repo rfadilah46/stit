@@ -7,6 +7,7 @@ use App\Http\Controllers\StudyProgramController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ClassRoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,15 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::post('update/{id}', [UserController::class, 'update_user']);
         Route::delete('/{id}', [UserController::class, 'destroy_user']);
+    });
+
+    //prefix class_room, middleware auth:api
+    Route::prefix('class_room')->group(function () {
+        Route::get('/', [ClassRoomController::class, 'index']);
+        Route::get('/{id}', [ClassRoomController::class, 'show']);
+        Route::post('/', [ClassRoomController::class, 'store']);
+        Route::put('/{id}', [ClassRoomController::class, 'update']);
+        Route::delete('/{id}', [ClassRoomController::class, 'destroy']);
     });
 
 });
