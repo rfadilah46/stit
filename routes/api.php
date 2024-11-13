@@ -8,6 +8,7 @@ use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassRoomController;
+use App\Http\Controllers\ScheduleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,15 @@ Route::prefix('v1')->group(function () {
         Route::post('/', [ClassRoomController::class, 'store']);
         Route::put('/{id}', [ClassRoomController::class, 'update']);
         Route::delete('/{id}', [ClassRoomController::class, 'destroy']);
+    });
+
+    //prefix schedule, middleware auth:api
+    Route::prefix('schedule')->group(function () {
+        Route::get('/', [ScheduleController::class, 'index']);
+        Route::get('/{id}', [ScheduleController::class, 'show']);
+        Route::post('/', [ScheduleController::class, 'store']);
+        Route::put('/{id}', [ScheduleController::class, 'update']);
+        Route::delete('/{id}', [ScheduleController::class, 'destroy']);
     });
 
 });
