@@ -9,6 +9,9 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ClassRoomController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\TagihanController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\StudentAreaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,5 +104,37 @@ Route::prefix('v1')->group(function () {
         Route::put('/{id}', [ScheduleController::class, 'update']);
         Route::delete('/{id}', [ScheduleController::class, 'destroy']);
     });
+    //tagihan
+    Route::prefix('payment')->group(function () {
+        //prefix semester_payment
+        Route::prefix('semester_payment')->group(function () {
+            Route::get('/', [TagihanController::class, 'index']);
+            Route::get('/{id}', [TagihanController::class, 'show']);
+            Route::post('/', [TagihanController::class, 'store_semester_payment']);
+            Route::put('/{id}', [TagihanController::class, 'update']);
+            Route::delete('/{id}', [TagihanController::class, 'destroy_semester_payment']);
+        });
+    });
+
+    //prefix semester, middleware auth:api
+    Route::prefix('semester')->group(function () {
+        Route::get('/', [SemesterController::class, 'index']);
+        Route::get('/{id}', [SemesterController::class, 'show']);
+        Route::post('/', [SemesterController::class, 'store']);
+        Route::put('/{id}', [SemesterController::class, 'update']);
+        Route::delete('/{id}', [SemesterController::class, 'destroy']);
+    });
+
+    //prefix student_api
+    Route::prefix('student_api')->group(function () {
+        //prefix profile
+        Route::prefix('profile')->group(function () {
+            Route::get('/', [StudentAreaController::class, 'show_profile']);
+            //save_profile
+            Route::post('/save_profile', [StudentAreaController::class, 'save_profile']);
+        });
+    });
+
+
 
 });
